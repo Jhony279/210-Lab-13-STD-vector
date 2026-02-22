@@ -35,11 +35,11 @@ void populateVector(string fLocation, vector<double>&tVector, vector<string>&inv
 
     fileData.open(fLocation);
     if (fileData.good()){
-        // static int i = 0;
-        // static int offset = 2;
+        static int i = 0;
         static int currentLine = 1;
 
-        while(getline(fileData, text) && currentLine <= MAX_DAYS){
+        while(getline(fileData, text)){
+            i++;
             if (text.empty()){
                 currentLine++;
                 continue;
@@ -49,13 +49,11 @@ void populateVector(string fLocation, vector<double>&tVector, vector<string>&inv
                 temperatureVal = stod(text);
                 tVector.push_back(temperatureVal);
                 currentLine++;
-                // i += offset;
 
             } catch(const std::exception& e){
                 invArgArray.push_back(text + " at line " + to_string(currentLine));
 
                 currentLine++;
-                // cout << "CL: " << currentLine << "i: " << i << endl;
                 continue;
             }
         }
@@ -64,8 +62,27 @@ void populateVector(string fLocation, vector<double>&tVector, vector<string>&inv
         return;
     }
     cout << endl;
+    //  && i <= MAX_DAYS
 }
 
 void displayVectorInfo(vector<double>& tVector){
-    for (double val : tVector) cout << val << " "; cout << endl;
+    static int week = 0;
+    if (tVector.empty()){
+        cout << "!Vector is empty!" << endl;
+        return;
+    }
+
+    cout << "--- Temperature Data ---" << endl;
+    for (double j : tVector) {
+        // Display week number at the start of each week
+        if (week % 7 == 0) {
+            cout << "Week " << week / 7 + 1 << ": ";
+        }
+        cout << j << ", ";
+        week++;
+        // If week is over, start new line
+        if (week % 7 == 0) {
+            cout << "\n";
+        }
+    };
 }
