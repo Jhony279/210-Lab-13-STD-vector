@@ -35,11 +35,9 @@ void populateVector(string fLocation, vector<double>&tVector, vector<string>&inv
 
     fileData.open(fLocation);
     if (fileData.good()){
-        static int i = 0;
         static int currentLine = 1;
 
         while(getline(fileData, text)){
-            i++;
             if (text.empty()){
                 currentLine++;
                 continue;
@@ -62,7 +60,6 @@ void populateVector(string fLocation, vector<double>&tVector, vector<string>&inv
         return;
     }
     cout << endl;
-    //  && i <= MAX_DAYS
 }
 
 void displayVectorInfo(vector<double>& tVector){
@@ -85,4 +82,16 @@ void displayVectorInfo(vector<double>& tVector){
             cout << "\n";
         }
     };
+
+    cout << "\n  Hottest day: " 
+        << *max_element(tVector.begin(), tVector.end()) << "°F" << endl;
+    cout << "  Coldest day: " 
+        << *min_element(tVector.begin(), tVector.end()) << "°F" << endl;
+
+    if (tVector.size() > 30)
+        int months =  tVector.size() / 30;
+        for 
+    else 
+        cout << "  Average temperature in the month: " 
+            << accumulate(tVector.begin(), tVector.end(), 0.0)/tVector.size() << "°F" << endl;
 }
