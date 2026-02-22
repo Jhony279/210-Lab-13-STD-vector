@@ -13,6 +13,7 @@ const string FILE_LOCATION = "C:\\Users\\lordj\\COMSC-210\\projects\\210-lab-13\
 
 void populateVector(string, vector<double>&, vector<string>&);
 void displayVectorInfo(vector<double>&);
+void displayInvalidVector(vector<string>&);
 
 
 /**
@@ -25,32 +26,39 @@ int main() {
 
     populateVector(FILE_LOCATION, tempVector, iArgVector);
     displayVectorInfo(tempVector);
+    displayInvalidVector(iArgVector);
 
     return 0;
 }
 
-void populateVector(string fLocation, vector<double>&tVector, vector<string>&invArgArray){
+void populateVector(string fLocation, vector<double>&tVector, vector<string>&iDatArray){
     ifstream fileData;
     string text;
+    // Variable to hold the converted temperature value
     static double temperatureVal = 0;
 
     fileData.open(fLocation);
+    // Check if file was opened successfully
     if (fileData.good()){
+        // Variable to keep track of the current line number in the file
         static int currentLine = 1;
 
         while(getline(fileData, text)){
+            // If line is empty, skip to next line
             if (text.empty()){
                 currentLine++;
                 continue;
             }
 
             try{
+                // See if data can be converted to double
                 temperatureVal = stod(text);
                 tVector.push_back(temperatureVal);
                 currentLine++;
 
             } catch(const std::exception& e){
-                invArgArray.push_back(text + " at line " + to_string(currentLine));
+                // Add Invalid entry and line number to iDatArray
+                iDatArray.push_back(text + " at line " + to_string(currentLine));
 
                 currentLine++;
                 continue;
@@ -60,21 +68,23 @@ void populateVector(string fLocation, vector<double>&tVector, vector<string>&inv
         cout << "\n!File was not found!" << endl << endl;
         return;
     }
-    cout << endl;
 }
 
 void displayVectorInfo(vector<double>& tVector){
     static int week = 0;
+
+    // End function if array is empty
     if (tVector.empty()){
         cout << "!Vector is empty!" << endl;
         return;
     }
 
-    cout << "--- Temperature Data ---" << endl;
+    cout << "\n--- Temperature Data ---" << endl;
+    // loop through array and display data per week
     for (double j : tVector) {
         // Display week number at the start of each week
         if (week % 7 == 0) {
-            cout << "Week " << week / 7 + 1 << ": ";
+            cout << " Week " << week / 7 + 1 << ": ";
         }
         cout << j << ", ";
         week++;
@@ -91,15 +101,24 @@ void displayVectorInfo(vector<double>& tVector){
 
     // Calculate how many months of data there are
     static int months =  ceil(tVector.size() / 30.0);
-    // Calculate and display average temperature for each month, or for the month if there is only one month of data
+    // Calculate and display average temperature (If multiple months)
     if (tVector.size() > 30)
         for (int i = 0; i < months; i++){
             cout << "  Average temperature in month " << i + 1 << ": " 
                 << accumulate(tVector.begin() + (i * 30), tVector.begin() + 
                                 ((i + 1) * 30), 0.0)/30 << "°F" << endl;
         }
+    // calculate and display average temperature (If only one month)
     else 
         cout << "  Average temperature in the month: " 
                 << accumulate(tVector.begin(), tVector.end(), 0.0)/tVector.size() 
                     << "°F" << endl;
+}
+
+void displayInvalidVector(vector<string>& iDatArray){
+    cout << "\n--- Invalid Data ---" << endl;
+    // loop throguh invalid data array and display data and line number of each entry
+    for (string j : iDatArray) {
+        cout << "  " << j << endl;
+    }
 }
