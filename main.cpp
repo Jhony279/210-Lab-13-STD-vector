@@ -20,14 +20,33 @@ int main() {
     return 0;
 }
 
-void populateArray(string fLocation, vector<double>& tVector, vector<string>& invArray, 
-                    vector<int>& invLineArray){
+void populateArray(string fLocation, vector<double>&tVector, vector<string>&invArgArray){
     ifstream fileData;
     string text;
 
     fileData.open(fLocation);
     if (fileData.good()){
         static int i = 0;
-        while(getline(fileData, text) && i < MAX_DAYS){}
+        static int offset = 2;
+        static int line = 1;
+        static double temperatureVal = 0;
+
+        while(getline(fileData, text) && i/offset < MAX_DAYS){
+            if (text.empty()){
+                line++;
+                continue;
+            }
+
+            try{
+                temperatureVal = stod(text);
+            } catch(const std::exception& e){
+
+                line++;
+                continue;
+            }
+            
+            
+            
+        }
     }
 }
