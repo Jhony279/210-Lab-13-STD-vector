@@ -39,6 +39,10 @@ void populateArray(string fLocation, vector<double>&tVector, vector<string>&invA
 
             try{
                 temperatureVal = stod(text);
+                tVector.push_back(temperatureVal);
+                currentLine++;
+                i += offset;
+
             } catch(const std::exception& e){
                 invArgArray.at(i) = text;
                 invArgArray.at(i + 1) = currentLine;
@@ -48,5 +52,9 @@ void populateArray(string fLocation, vector<double>&tVector, vector<string>&invA
                 continue;
             }
         }
+    } else{
+        cout << "\n!File was not found!" << endl << endl;
+        return;
     }
+    cout << endl;
 }
