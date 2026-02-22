@@ -5,10 +5,11 @@
 #include <vector>
 #include <algorithm>    // for sort(), find(), max_element(), min_element()
 #include <numeric>  // for accumulate()
+#include <cmath>    // for round()
 using namespace std;
 
 const int MAX_DAYS = 30;
-const string FILE_LOCATION = "C:\\Users\\lordj\\COMSC-210\\projects\\210-lab-12\\text.txt";
+const string FILE_LOCATION = "C:\\Users\\lordj\\COMSC-210\\projects\\210-lab-13\\text.txt";
 
 void populateVector(string, vector<double>&, vector<string>&);
 void displayVectorInfo(vector<double>&);
@@ -88,10 +89,17 @@ void displayVectorInfo(vector<double>& tVector){
     cout << "  Coldest day: " 
         << *min_element(tVector.begin(), tVector.end()) << "°F" << endl;
 
+    // Calculate how many months of data there are
+    static int months =  ceil(tVector.size() / 30.0);
+    // Calculate and display average temperature for each month, or for the month if there is only one month of data
     if (tVector.size() > 30)
-        int months =  tVector.size() / 30;
-        for 
+        for (int i = 0; i < months; i++){
+            cout << "  Average temperature in month " << i + 1 << ": " 
+                << accumulate(tVector.begin() + (i * 30), tVector.begin() + 
+                                ((i + 1) * 30), 0.0)/30 << "°F" << endl;
+        }
     else 
         cout << "  Average temperature in the month: " 
-            << accumulate(tVector.begin(), tVector.end(), 0.0)/tVector.size() << "°F" << endl;
+                << accumulate(tVector.begin(), tVector.end(), 0.0)/tVector.size() 
+                    << "°F" << endl;
 }
