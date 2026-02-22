@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>    // for sort(), find(), max_element(), min_element()
+#include <numeric>  // for accumulate()
 using namespace std;
 
 const string FILE_LOCATION = " ";
