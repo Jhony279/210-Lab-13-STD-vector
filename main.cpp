@@ -15,10 +15,10 @@ void populateVector(string, vector<double>&, vector<string>&);
 void displayVectorInfo(vector<double>&);
 void displayInvalidVector(vector<string>&);
 
-
 /**
- * @brief - Description of main
- * @return 
+ * @brief Reads a text file filled with temperature data, populates an array with it
+ *        while keeping track of invalid entries and their line, then displays the array
+ *        data and invalid entries.
 */
 int main() {
     vector<double> tempVector;
@@ -28,9 +28,20 @@ int main() {
     displayVectorInfo(tempVector);
     displayInvalidVector(iArgVector);
 
+    // Clear Vectors for next data set
+    tempVector.clear();
+    iArgVector.clear();
+
     return 0;
 }
 
+/**
+ * @brief Reads a text file, populates an array with it while keeping track of invalid
+ *        entries and their line.
+ * @param fileLoaction The location of the text file to read from
+ * @param tVector The vector to hold the temperature data
+ * @param iDatArray The vector to hold the invalid entries and lines
+*/
 void populateVector(string fLocation, vector<double>&tVector, vector<string>&iDatArray){
     ifstream fileData;
     string text;
@@ -58,7 +69,7 @@ void populateVector(string fLocation, vector<double>&tVector, vector<string>&iDa
 
             } catch(const std::exception& e){
                 // Add Invalid entry and line number to iDatArray
-                iDatArray.push_back(text + " at line " + to_string(currentLine));
+                iDatArray.push_back(text + " - at line: " + to_string(currentLine));
 
                 currentLine++;
                 continue;
@@ -70,6 +81,11 @@ void populateVector(string fLocation, vector<double>&tVector, vector<string>&iDa
     }
 }
 
+/**
+ * @brief Displays the data in the array, as well as the hottest day, coldest day, and 
+ *        average temperature.
+ * @param tVector The array to hold the temperature data
+*/
 void displayVectorInfo(vector<double>& tVector){
     static int week = 0;
 
@@ -115,6 +131,10 @@ void displayVectorInfo(vector<double>& tVector){
                     << "°F" << endl;
 }
 
+/**
+ * @brief Displays the invalid entries in the array, as well as their line number.
+ * @param iDatArray The array to hold the invalid entries and their numbers
+*/
 void displayInvalidVector(vector<string>& iDatArray){
     cout << "\n--- Invalid Data ---" << endl;
     // loop throguh invalid data array and display data and line number of each entry
